@@ -3,6 +3,7 @@ package com.example.tuckingfypos.creepyusertracker;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +23,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
+        // TODO: 8/10/16  follow through with runtime permissions request
+        ActivityCompat.OnRequestPermissionsResultCallback,
         LocationListener{
 
     private GoogleMap mMap;
@@ -40,14 +43,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     }
-    
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
 
-        //TODO: After Permissions fix, get new LatLng using location
-        // Add a marker in Sydney and move the camera
+        //TODO: After Permissions fix, get new LatLng using location and apply it here
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
@@ -58,6 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onConnected(@Nullable Bundle bundle) {
         Log.i(TAG, "Location services connected");
         //FIXME: Request runtime permission from user
+        // https://developer.android.com/training/permissions/requesting.html
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         if (location == null) {
